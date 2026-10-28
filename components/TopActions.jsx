@@ -51,7 +51,6 @@ export default function TopActions({ profile }) {
       <button onClick={toggleTheme} className={btn} aria-label="다크 모드 전환" title="다크 모드 전환">
         <Moon size={18} className="dark:hidden" aria-hidden />
         <Sun size={18} className="hidden dark:block" aria-hidden />
-        <span className="hidden md:inline">Theme</span>
       </button>
     </div>
   );

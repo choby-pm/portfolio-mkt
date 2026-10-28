@@ -1,8 +1,8 @@
 import TopActions from "./TopActions";
 
 export const NAV = [
-  { id: "campaigns", label: "캠페인" },
-  { id: "faq", label: "질문" },
+  { id: "cases", label: "케이스" },
+  { id: "capabilities", label: "역량" },
   { id: "geo", label: "GEO 랩" },
   { id: "career", label: "경력" },
   { id: "contact", label: "문의" },
@@ -13,7 +13,7 @@ export default function TopBar({ profile }) {
   const link = "shrink-0 h-9 px-3 inline-flex items-center rounded-full text-sm text-muted hover:text-text hover:bg-surface-2 transition-colors";
   return (
     <header className="sticky top-0 z-20 bg-bg/90 backdrop-blur border-b border-border">
-      <div className="mx-auto max-w-[1120px] px-4 md:px-8 flex flex-wrap md:flex-nowrap items-center gap-x-4">
+      <div className="mx-auto max-w-[1040px] px-4 md:px-8 flex flex-wrap md:flex-nowrap items-center gap-x-4">
         <a href="#top" className="h-14 inline-flex items-center gap-2 font-bold">
           <span
             aria-hidden

@@ -25,11 +25,10 @@ function Label({ children }) {
   return <h4 className="mb-3 font-semibold">{children}</h4>;
 }
 
-// 펼친 내용: 지표 → 실행 흐름(순서가 있는 단계라 번호) → 주요 과제 → 결과
+// 펼친 내용: 실행 흐름(순서가 있는 단계라 번호) → 주요 과제 → 그 밖의 결과
 function Detail({ c }) {
   return (
-    <div className="@container mt-5 pl-4 md:pl-5 border-l-2 border-border flex flex-col gap-8">
-      <Metrics items={c.metrics} />
+    <div className="@container mt-6 flex flex-col gap-8">
       <div>
         <Label>실행 흐름</Label>
         <ol className="flex flex-col gap-2">
@@ -55,49 +54,50 @@ function Detail({ c }) {
           </p>
         </div>
       ))}
-      <div>
-        <Label>결과</Label>
+      {c.outcome.length > 1 && <div>
+        <Label>그 밖의 결과</Label>
         <ul className="flex flex-col gap-2">
-          {c.outcome.map((o) => (
+          {c.outcome.slice(1).map((o) => (
             <li key={o} className="flex gap-2.5 text-[15px] leading-relaxed">
               <CircleCheck size={18} className="text-ok shrink-0 mt-0.5" aria-hidden />{o}
             </li>
           ))}
         </ul>
-      </div>
+      </div>}
     </div>
   );
 }
 
-// 캠페인을 검색 결과 한 건처럼: 경로 줄(회사 › 채널 › 기간) · 파란 제목 · 두 줄 요약. 누르면 그 자리에서 펼침
-// <details>라 키보드 · 스크린리더가 기본 지원. 출처 링크(#id)로 들어오면 PageEffects가 펼침
-export default function Results({ campaigns }) {
+// 케이스 한 건 = 큰 행 하나. 왼쪽: 회사 · 기간과 대표 결과 한 문장(결과 먼저) / 오른쪽: 제목 · 채널 · 맥락 · 지표 · 펼치기
+// 펼치기는 <details>라 키보드 · 스크린리더가 기본 지원
+export default function Cases({ campaigns }) {
   return (
-    <ol className="flex flex-col gap-10">
+    <div className="border-t border-border">
       {campaigns.map((c) => (
-        <li key={c.id}>
-          <details
-            id={c.id}
-            className="group scroll-mt-28 md:scroll-mt-20"
-            onToggle={(e) => e.currentTarget.open && track("view_section", { item: c.id, section: "detail" })}
-          >
-            <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer">
-              <p className="text-sm text-ok truncate">
-                {c.company} › {c.channel} › <span className="tabular-nums">{c.period}</span>
-                {c.status.kind === "live" && <span className="ml-2 text-muted">{c.status.label}</span>}
-              </p>
-              <h3 className="mt-1 text-xl md:text-[22px] font-semibold text-accent group-hover:underline underline-offset-4">{c.title}</h3>
-              <p className="mt-1.5 max-w-[42em] text-[15px] leading-relaxed text-muted line-clamp-2 group-open:line-clamp-none">{c.summary}</p>
-              <span className="mt-2 inline-flex items-center gap-1 text-sm font-medium">
-                <span className="group-open:hidden">실행 흐름 · 주요 과제 · 결과 보기</span>
+        <article key={c.id} id={c.id} aria-labelledby={`${c.id}-title`} className="scroll-mt-20 py-10 md:py-12 border-b border-border grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-x-12 gap-y-5">
+          <div>
+            <p className="text-sm text-muted tabular-nums">
+              {c.company} · {c.period}
+              {c.status.kind === "live" && <span className="ml-2 px-1.5 py-0.5 rounded-xs bg-ok-soft text-ok text-xs">{c.status.label}</span>}
+            </p>
+            <p className="mt-3 text-[22px] md:text-[26px] font-bold leading-[1.4] tracking-tight text-balance">{c.outcome[0]}</p>
+          </div>
+          <div className="min-w-0">
+            <h3 id={`${c.id}-title`} className="text-lg font-semibold">{c.title}</h3>
+            <p className="mt-1 text-sm text-accent">{c.channel}</p>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted">{c.summary}</p>
+            <div className="mt-6"><Metrics items={c.metrics} /></div>
+            <details className="group mt-6" onToggle={(e) => e.currentTarget.open && track("view_section", { item: c.id, section: "detail" })}>
+              <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer inline-flex items-center gap-1 text-sm font-medium hover:text-accent transition-colors">
+                <span className="group-open:hidden">실행 흐름 · 주요 과제 보기</span>
                 <span className="hidden group-open:inline">접기</span>
                 <ChevronDown size={16} className="transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden />
-              </span>
-            </summary>
-            <Detail c={c} />
-          </details>
-        </li>
+              </summary>
+              <Detail c={c} />
+            </details>
+          </div>
+        </article>
       ))}
-    </ol>
+    </div>
   );
 }
