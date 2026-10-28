@@ -23,9 +23,9 @@
 ## Review Focus
 
 1. `GA_ID`가 빈 문자열 → 운영 빌드에서도 gtag 스크립트가 로드되지 않고 `track()`은 조용히 무시 (Task 1 검증)
-2. 지표 값 `null` → "null" · "undefined" · 빈 칸이 아니라 "—"와 "수치 확인 중" (Task 3 check-data + 화면 확인)
+2. 지표 값 `null` → "null" · "undefined" · 빈 칸이 아니라 "—"와 "수치 확인 중" (Task 3 · 4 check-data + 화면 확인)
 3. 375px에서 하단 탭바 5칸(개요 · 캠페인 · GEO · 경력 · 문의) 라벨이 줄바꿈 · 잘림 없음 (Task 2)
-4. 역량 표의 근거 링크가 없는 케이스 id를 가리킴 → 클릭해도 빈 화면 (Task 3 check-data에서 assert)
+4. 역량 표의 근거 링크가 없는 케이스 id를 가리킴 → 클릭해도 빈 화면 (Task 4 check-data에서 assert)
 5. GEO 랩 · 경력처럼 긴 화면에서 휠: 내부 스크롤이 끝까지 간 뒤에만 다음 화면으로(EDGE_PAUSE 유지) (Task 5 · 6 확인)
 
 ---
@@ -62,38 +62,39 @@
 - [ ] **Step 3:** `npm run build` 성공, 브라우저에서 5화면 휠 · 내비 이동, 375px 하단 탭 5칸 한 줄(Review Focus 3)
 - [ ] **Step 4:** 커밋 `feat: five-screen analytics console shell`, push
 
-### Task 3: 개요
+### Task 3: 캠페인 (Scorecard 포함)
 
 **Files:**
-- Modify: `components/Panel.jsx`(Scorecard 추가), `components/sections/Overview.jsx`(전면 교체), `data/portfolio.json`(profile · kpis · capabilities · skills), `scripts/check-data.mjs`
+- Modify: `components/Panel.jsx`(Scorecard 추가), `scripts/check-data.mjs`, `components/sections/Campaigns.jsx`, `components/sections/CaseStudy.jsx`, `data/portfolio.json`(`projects` → `campaigns`)
 
 **Interfaces:**
-- Produces: `Scorecard({ items: [{ label: string, value: string|null, note?: string }] })` — `value === null`이면 값 자리에 "—", note 자리에 "수치 확인 중". Task 4 CaseStudy 지표 타일도 이것을 씀
-- Data: `profile.role = "그로스 마케터"`, `profile.tagline` = spec 초안 문구, `profile.photo` 삭제. `kpis`: `[{label:"마케팅 · SEO 경력", value:"auto"}, {label:"SEO 운영 국가", value:"26개국"}, {label:"주요 키워드 SERP 1페이지", value:"대부분", note:"노출되지 않던 홈페이지 기준"}, {label:"—", value:null}]` (`"auto"`는 Overview가 `spans()`로 field ∈ {SEO, 마케팅} 회사 개월 합계를 `formatMonths`로 표시). `capabilities`: `[{title, desc, proof?:{label, case}}]` 행 5개(검색광고 · 퍼포먼스 / SEO / 측정 · 분석 설계 / 웹 구현 / GEO(준비 중)), GEO 행의 proof는 `{label:"GEO 랩", screen:"geo"}`
-- 원본 `strengths` · 기본 정보 카드 · 학력/수상/활동 패널은 Overview에서 제거(Task 6이 경력으로 옮김)
-
-- [ ] **Step 1: check-data assert 추가** — `capabilities[].proof.case`가 모두 `campaigns[].id`에 존재, `kpis`와 모든 `campaigns[].metrics`의 value는 문자열 또는 `null`(빈 문자열 금지)
-- [ ] **Step 2:** `npm run check` → campaigns 미존재로 FAIL 확인(Task 4 전이므로 case 참조는 Task 4에서 통과; 이 단계에선 proof 없이 두거나 Task 4 id를 미리 씀 — 미리 쓰고 FAIL 확인)
-- [ ] **Step 3:** Scorecard, Overview(소개 → Scorecard → 역량 DataTable → 도구 칩) 구현. 근거 클릭: `case`면 `onOpenCase(id)`, `screen`이면 `goTo(screen)` — Dashboard가 `onGo` prop 추가 전달
-- [ ] **Step 4:** 데스크톱 · 375px · 다크에서 "—" 칸 확인(Review Focus 2), `npm run build`
-- [ ] **Step 5:** 커밋 `feat: overview scorecards and channel capabilities`, push (check FAIL이면 Task 4 후 함께 커밋)
-
-### Task 4: 캠페인
-
-**Files:**
-- Modify: `components/sections/Campaigns.jsx`, `components/sections/CaseStudy.jsx`, `data/portfolio.json`(`projects` → `campaigns`)
-
-**Interfaces:**
-- Consumes: `Scorecard`(Task 3)
+- Produces: `Scorecard({ items: [{ label: string, value: string|null, note?: string }] })` — `value === null`이면 값 자리에 "—", note 자리에 "수치 확인 중". Task 4 개요 KPI도 이것을 씀
+- Produces: `data.campaigns[].id` = `groundk-seo` · `samsung-seo` · `measurement`
 - Data: `campaigns` 3건, id `groundk-seo` · `samsung-seo` · `measurement`, 원본 project 필드 형태 유지 + `channel: string`. `metrics`: groundk-seo `[{label:"노출 홈페이지",value:null},{label:"주요 키워드",value:null},{label:"광고 예산",value:null}]`, samsung-seo `[{label:"운영 국가",value:"26개국"},{label:"담당 키워드",value:null},{label:"트래픽 변화",value:null}]`, measurement `[{label:"GA4 이벤트",value:"5종"},{label:"분석 도구",value:"2종"}]`
 - 내용 출처: groundk-seo · samsung-seo는 PFD `data/career-docs.json`의 그라운드케이 "광고 · SEO 기획 및 운영", 아티언스 duties 문장만. measurement는 PFD `lib/gtag.js` · `components/VercelAnalytics.jsx` · 이벤트 5종 · UTM 규칙(`utm_source` / `utm_medium=referral` / `utm_campaign=회사`)
 - visual: groundk-seo flow(경쟁 분석 → 키워드 전략 → 콘텐츠 · 소재 → 통합 운영 → 성과 분석), samsung-seo flow(다국어 전략 → 진단 → 우선순위 → 모니터링 · 리포팅), measurement table(head `["이벤트","파라미터","목적"]`, 실제 코드의 이벤트 5종)
 
-- [ ] **Step 1:** `npm run check` FAIL(Task 3 assert) 확인 후 데이터 작성 → PASS
+- [ ] **Step 1:** check-data에 assert 추가: `campaigns.length === 3`, 모든 `metrics[].value`는 문자열 또는 `null`(빈 문자열 금지). `npm run check` FAIL(campaigns 없음) 확인 후 데이터 작성 → PASS
 - [ ] **Step 2:** 목록 열: 캠페인 · 채널 · 고객사(md+) · 역할(lg+) · 상태 · 기간, 하단 "조회 3건 · 채널 N종"(채널 종류 수 계산)
 - [ ] **Step 3:** CaseStudy: 지표 타일을 Scorecard로, 상세 섹션 탭 라벨 개요 · 실행 · 결과(서비스 구성 섹션은 `p.service` 없으면 숨김 — 원본 동작 확인)
-- [ ] **Step 4:** 개요 근거 링크 → 해당 상세 열림, 이전/다음 이동, 375px 표 → 카드 전환 확인. `npm run build`
+- [ ] **Step 4:** null 지표가 "—" · "수치 확인 중"으로 보임(Review Focus 2), 이전/다음 이동, 375px 표 → 카드 전환 확인. `npm run build`
 - [ ] **Step 5:** 커밋 `feat: campaign list and case details`, push
+
+### Task 4: 개요
+
+**Files:**
+- Modify: `components/sections/Overview.jsx`(전면 교체), `data/portfolio.json`(profile · kpis · capabilities · skills), `scripts/check-data.mjs`
+
+**Interfaces:**
+- Consumes: `Scorecard`, `campaigns[].id`(Task 3)
+- Data: `profile.role = "그로스 마케터"`, `profile.tagline` = spec 초안 문구, `profile.photo` 삭제. `kpis`: `[{label:"마케팅 · SEO 경력", value:"auto"}, {label:"SEO 운영 국가", value:"26개국"}, {label:"주요 키워드 SERP 1페이지", value:"대부분", note:"노출되지 않던 홈페이지 기준"}, {label:"—", value:null}]` (`"auto"`는 Overview가 `spans()`로 field ∈ {SEO, 마케팅} 회사 개월 합계를 `formatMonths`로 표시). `capabilities`: `[{title, desc, proof?:{label, case}}]` 행 5개(검색광고 · 퍼포먼스 / SEO / 측정 · 분석 설계 / 웹 구현 / GEO(준비 중)), GEO 행의 proof는 `{label:"GEO 랩", screen:"geo"}`
+- 원본 `strengths` · 기본 정보 카드 · 학력/수상/활동 패널은 Overview에서 제거(Task 6이 경력으로 옮김)
+
+- [ ] **Step 1: check-data assert 추가** — `capabilities[].proof.case`가 있으면 `campaigns[].id`에 존재, `kpis[].value`는 문자열 또는 `null`(빈 문자열 금지)
+- [ ] **Step 2:** 없는 id(`"nope"`)를 임시로 넣어 `npm run check` FAIL 확인 후 되돌림
+- [ ] **Step 3:** Scorecard, Overview(소개 → Scorecard → 역량 DataTable → 도구 칩) 구현. 근거 클릭: `case`면 `onOpenCase(id)`, `screen`이면 `goTo(screen)` — Dashboard가 `onGo` prop 추가 전달
+- [ ] **Step 4:** 데스크톱 · 375px · 다크에서 "—" 칸 확인(Review Focus 2), 근거 클릭 → 캠페인 상세 열림, `npm run build`
+- [ ] **Step 5:** 커밋 `feat: overview scorecards and channel capabilities`, push
 
 ### Task 5: GEO 랩
 
