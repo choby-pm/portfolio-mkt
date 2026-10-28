@@ -35,15 +35,17 @@ export default function GeoLab({ geo }) {
         <Visual visual={geo.bridge} />
       </Block>
 
-      <Block title="연구 노트" icon={NotebookPen} aside="출처 없는 내용은 가설로 표시">
+      <Block title="연구 노트" icon={NotebookPen} aside="검증 안 된 내용은 가설로 표시">
         <div className="grid @4xl:grid-cols-3 gap-3">
           {Object.entries(KIND).map(([kind, k]) => (
-            <ul key={kind} className="card p-4 flex flex-col gap-3" aria-label={k.label}>
-              <li className={`self-start px-2 h-6 inline-flex items-center rounded-xs text-xs font-medium ${k.className}`}>{k.label}</li>
-              {geo.notes.filter((n) => n.kind === kind).map((n) => (
-                <li key={n.text} className="text-sm leading-relaxed">{n.text}</li>
-              ))}
-            </ul>
+            <div key={kind} className="card p-4 flex flex-col gap-3">
+              <h4 className={`self-start px-2 h-6 inline-flex items-center rounded-xs text-xs font-medium ${k.className}`}>{k.label}</h4>
+              <ul className="flex flex-col gap-3">
+                {geo.notes.filter((n) => n.kind === kind).map((n) => (
+                  <li key={n.text} className="text-sm leading-relaxed">{n.text}</li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
       </Block>

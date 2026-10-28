@@ -18,9 +18,15 @@ const ids = new Set(data.campaigns.map((c) => c.id));
 assert.ok(data.kpis.length > 0, "kpis 없음");
 for (const k of data.kpis) assert.ok(metricOk(k), `KPI 값: ${JSON.stringify(k)}`);
 for (const c of data.capabilities) {
+  assert.ok(c.proof?.case || c.proof?.screen, `근거 링크 없음: ${c.title}`);
   if (c.proof?.case) assert.ok(ids.has(c.proof.case), `없는 케이스 근거: ${c.proof.case}`);
   if (c.proof?.screen) assert.ok(["geo"].includes(c.proof.screen), `없는 화면 근거: ${c.proof.screen}`);
 }
+
+// 측정 설계 케이스: 지표의 이벤트 수와 이벤트 표의 행 수가 같아야 함
+const m = data.campaigns.find((c) => c.id === "measurement");
+const events = m.troubles.find((t) => t.visual?.type === "table").visual.rows.length;
+assert.equal(m.metrics.find((x) => x.label === "GA4 이벤트").value, `${events}종`);
 
 // GEO 랩: 아직 성과가 없는 계획 · 연구 노트. 상태를 바꾸지 않은 채 성과처럼 보이지 않게
 assert.equal(data.geo.plan.status.label, "준비 중");

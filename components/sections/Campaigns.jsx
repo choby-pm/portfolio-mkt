@@ -7,7 +7,6 @@ const shortPeriod = (p) => p.replace(/20(\d\d)\./g, "$1.").replace(" - ", "–")
 // 캠페인 표: 행을 누르면 상세 화면. 넓을수록 칸(고객사 · 역할)이 늘어남. 하단 줄은 조회 결과 요약
 function CampaignGrid({ campaigns, onOpen }) {
   const live = campaigns.filter((p) => p.status.kind === "live").length;
-  const channels = new Set(campaigns.flatMap((p) => p.channel.split(" · "))).size;
   return (
     <div className="card overflow-hidden">
       <table className="w-full text-sm">
@@ -42,7 +41,6 @@ function CampaignGrid({ campaigns, onOpen }) {
       </table>
       <p className="h-10 px-4 border-t border-border bg-surface-2 text-xs text-muted flex items-center gap-2 [&>span+span]:before:content-['·'] [&>span+span]:before:mr-2">
         <span>조회 {campaigns.length}건</span>
-        <span>채널 {channels}종</span>
         {live > 0 && <span>운영 중 {live}건</span>}
       </p>
     </div>
