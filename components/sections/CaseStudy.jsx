@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/gtag";
-import { Check, ExternalLink, Building2, Handshake, CalendarRange, Users, BriefcaseBusiness, UserRound, Lightbulb, CircleCheck, ArrowRight } from "lucide-react";
+import { Check, ExternalLink, Building2, Handshake, CalendarRange, Users, BriefcaseBusiness, Radio, UserRound, Lightbulb, CircleCheck, ArrowRight } from "lucide-react";
 import { GitHubMark } from "@/components/TopActions";
 import Visual from "./Visual";
-import { FormTable } from "@/components/Panel";
+import { FormTable, Scorecard } from "@/components/Panel";
 
 // 운영 중은 성공 색, 나머지(데모 등)는 강조색 옅은 칩
 const STATUS = { live: "bg-ok-soft text-ok" };
@@ -34,20 +34,6 @@ export function ProjectLinks({ links, className = "" }) {
         </a>
       ))}
     </div>
-  );
-}
-
-// 핵심 지표: 숫자를 크게, 설명은 작게
-function Metrics({ items }) {
-  return (
-    <dl className="grid grid-cols-3 gap-2 @2xl:gap-3">
-      {items.map((m) => (
-        <div key={m.label} className="clay border-l-2 border-l-accent px-3 py-3 @2xl:px-4">
-          <dd className="text-lg @2xl:text-2xl font-bold tabular-nums leading-tight">{m.value}</dd>
-          <dt className="mt-1 text-xs text-muted">{m.label}</dt>
-        </div>
-      ))}
-    </dl>
   );
 }
 
@@ -151,9 +137,9 @@ function Trouble({ t }) {
 
 const SECTIONS = [
   { id: "overview", label: "개요" },
-  { id: "service", label: "서비스 구성" },
-  { id: "troubles", label: "문제 해결" },
-  { id: "outcome", label: "성과" },
+  { id: "service", label: "실행 흐름" },
+  { id: "troubles", label: "주요 과제" },
+  { id: "outcome", label: "결과" },
 ];
 
 function SectionTitle({ children, count }) {
@@ -165,7 +151,7 @@ function SectionTitle({ children, count }) {
   );
 }
 
-// 프로젝트 상세: 헤더 → 기본 정보 → 지표 → 섹션을 한 화면에 이어서 표시(탭 뒤에 숨기지 않음)
+// 캠페인 상세: 헤더 → 기본 정보 → 지표 → 섹션을 한 화면에 이어서 표시(탭 뒤에 숨기지 않음)
 // 위에 붙는 바로가기 줄은 지금 보는 섹션을 강조하고, 누르면 상세 영역 안에서만 스크롤(바깥 메뉴는 그대로)
 export default function CaseStudy({ p }) {
   const [active, setActive] = useState(SECTIONS[0].id);
@@ -225,17 +211,19 @@ export default function CaseStudy({ p }) {
         <ProjectLinks links={p.links} />
       </header>
 
+      {/* 값이 없는 칸(팀 등)은 빼고 표시 */}
       <FormTable
         rows={[
           ["소속", p.company, Building2],
           ["고객사", p.client, Handshake],
+          ["채널", p.channel, Radio],
           ["기간", <span key="p" className="tabular-nums">{p.period}</span>, CalendarRange],
           ["팀", p.team, Users],
           ["역할", p.role, BriefcaseBusiness],
-        ]}
+        ].filter(([, v]) => v)}
       />
 
-      <Metrics items={p.metrics} />
+      <Scorecard items={p.metrics} />
 
       <nav ref={nav} aria-label="상세 섹션" className="sticky top-0 z-[5] -mx-5 md:-mx-6 px-5 md:px-6 bg-surface border-b border-border flex gap-1 overflow-x-auto no-scrollbar">
         {SECTIONS.map((t) => (
@@ -263,8 +251,8 @@ export default function CaseStudy({ p }) {
       </section>
 
       {(p.service || p.myRole) && (
-        <section {...sec("service")} aria-label="서비스 구성">
-          <SectionTitle>서비스 구성</SectionTitle>
+        <section {...sec("service")} aria-label="실행 흐름">
+          <SectionTitle>실행 흐름</SectionTitle>
           <div className="flex flex-col gap-6">
             {p.service && (
               <>
@@ -305,15 +293,15 @@ export default function CaseStudy({ p }) {
         </section>
       )}
 
-      <section {...sec("troubles")} aria-label="문제 해결">
-        <SectionTitle count={p.troubles.length}>문제 해결</SectionTitle>
+      <section {...sec("troubles")} aria-label="주요 과제">
+        <SectionTitle count={p.troubles.length}>주요 과제</SectionTitle>
         <div className="flex flex-col gap-6">
           {p.troubles.map((t) => <Trouble key={t.title} t={t} />)}
         </div>
       </section>
 
-      <section {...sec("outcome")} aria-label="성과">
-        <SectionTitle>성과</SectionTitle>
+      <section {...sec("outcome")} aria-label="결과">
+        <SectionTitle>결과</SectionTitle>
         <div className="flex flex-col gap-4">
           <ul className="grid @2xl:grid-cols-2 gap-2">
             {p.outcome.map((o) => (
@@ -322,13 +310,16 @@ export default function CaseStudy({ p }) {
               </li>
             ))}
           </ul>
-          <div className="rounded-sm border border-accent/30 bg-accent-soft p-4 @2xl:p-5 flex gap-3">
-            <Lightbulb size={20} className="text-accent shrink-0 mt-0.5" aria-hidden />
-            <div>
-              <p className="text-sm font-semibold text-accent">배운 점</p>
-              <p className="mt-1 text-sm @2xl:text-[15px] leading-relaxed">{p.learning}</p>
+          {/* 회고는 본인이 쓴 문장만: 비어 있으면 숨김 */}
+          {p.learning && (
+            <div className="rounded-sm border border-accent/30 bg-accent-soft p-4 @2xl:p-5 flex gap-3">
+              <Lightbulb size={20} className="text-accent shrink-0 mt-0.5" aria-hidden />
+              <div>
+                <p className="text-sm font-semibold text-accent">회고</p>
+                <p className="mt-1 text-sm @2xl:text-[15px] leading-relaxed">{p.learning}</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </article>

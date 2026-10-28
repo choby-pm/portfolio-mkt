@@ -73,3 +73,19 @@ export function RecordBar({ index, total, onBack, onPrev, onNext, prevLabel, nex
     </div>
   );
 }
+
+// 분석 콘솔 스코어카드: 값을 크게, 라벨은 작게. 값이 null이면 지어내지 않고 "—" + 수치 확인 중
+// items: [{ label, value: string | null, note? }]. 가장 가까운 @container 폭에 맞춰 2칸 → 한 줄
+export function Scorecard({ items }) {
+  return (
+    <dl className="grid grid-cols-2 @2xl:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-2 @2xl:gap-3">
+      {items.map((m) => (
+        <div key={m.label} className="clay border-l-2 border-l-accent px-3 py-3 @2xl:px-4 flex flex-col">
+          <dt className="order-2 mt-1 text-xs text-muted">{m.label}</dt>
+          <dd className={`text-lg @2xl:text-2xl font-bold tabular-nums leading-tight ${m.value === null ? "text-muted" : ""}`}>{m.value ?? "—"}</dd>
+          <dd className="order-3 mt-0.5 text-[11px] text-muted">{m.value === null ? "수치 확인 중" : m.note}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
