@@ -96,20 +96,21 @@
 - [ ] **Step 4:** 데스크톱 · 375px · 다크에서 "—" 칸 확인(Review Focus 2), 근거 클릭 → 캠페인 상세 열림, `npm run build`
 - [ ] **Step 5:** 커밋 `feat: overview scorecards and channel capabilities`, push
 
-### Task 5: GEO 랩
+### Task 5: GEO 랩 (연구 노트)
 
 **Files:**
 - Modify: `components/sections/GeoLab.jsx`, `data/portfolio.json`(`geo`), `scripts/check-data.mjs`
 
 **Interfaces:**
-- Data: `geo = { title:"노동법률사무소 홈페이지 GEO 계획", status:{kind:"plan",label:"준비 중"}, open:"미정", field:null, region:null, why:string, queries:{head:["유형","예시 질의","대응 콘텐츠"], rows:[[...]×4]}, strategy:{type:"flow", steps:[5단계]}, measure:{head:["지표","방법","도구"], rows}, log:[{date:"2026.10", text:"계획 수립"}] }`
-- 화면: Panel 헤더 줄(상태 배지 · 오픈 · 분야 · 지역, null은 "—") → 왜 GEO인가 → 타깃 질의 표(제목에 "예시") → 실행 전략 `<Visual visual={geo.strategy}/>` → 측정 계획 표 → 진행 로그. 표는 `<Visual visual={{type:"table",...}}/>` 재사용(좁으면 카드)
-- 문구 제약: 수치 · 성과 표현 금지, "가설" · "계획"으로 서술
+- Data: `geo = { intro:string, bridge:{head:["영역","SEO에서 가져가는 것","GEO에서 새로 필요한 것"], rows}, notes:[{kind:"known"|"unknown"|"hypothesis", text}], measure:{head:["지표","방법","한계"], rows}, plan:{ title:"노동법률사무소 홈페이지 적용 계획", status:{kind:"plan",label:"준비 중"}, open:"미정", field:null, region:null, queries:{head:["유형","예시 질의","대응 콘텐츠"], rows×4}, strategy:{type:"flow", steps×5} }, log:[{date:"2026.10", text}] }`
+- notes 배지: known "알려진 것"(ok색) · unknown "모르는 것"(muted) · hypothesis "가설"(accent)
+- 표는 `<Visual visual={{type:"table", ...}}/>` 재사용(좁으면 카드), 전략은 `<Visual visual={plan.strategy}/>`
+- 문구 제약: 수치 · 성과 표현 금지, 출처 없는 사실은 hypothesis로
 
-- [ ] **Step 1:** check-data에 `geo.status.label === "준비 중"`, `geo.log.length >= 1` assert, FAIL 확인
+- [ ] **Step 1:** check-data에 assert: `geo.plan.status.label === "준비 중"`, `geo.log.length >= 1`, 모든 `notes[].kind` ∈ {known, unknown, hypothesis}, `measure.head`에 "한계" 포함. FAIL 확인
 - [ ] **Step 2:** 데이터 · GeoLab 구현 → `npm run check` PASS, `npm run build`
 - [ ] **Step 3:** 데스크톱 · 375px · 다크, 휠로 끝까지 내린 뒤에만 경력으로 넘어감(Review Focus 5)
-- [ ] **Step 4:** 커밋 `feat: GEO lab plan for a labor law office site`, push
+- [ ] **Step 4:** 커밋 `feat: GEO lab research notes and law office plan`, push
 
 ### Task 6: 경력
 
