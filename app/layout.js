@@ -11,10 +11,9 @@ const pretendard = localFont({
   weight: "45 920",
 });
 
-export const metadata = {
-  title: "조병윤 · Portfolio",
-  description: "서비스 기획자 · PM 포트폴리오",
-};
+const title = "조병윤 · Growth Marketing Portfolio";
+const description = "검색 유입 진단 · 측정 설계 · 구현까지 하는 그로스 마케터 포트폴리오";
+export const metadata = { title, description, openGraph: { title, description, type: "website", locale: "ko_KR" } };
 
 // 하이드레이션 전에 테마를 정해 깜빡임 방지. 기본은 라이트, 사용자가 토글로 고른 값이 있으면 그 값. localStorage 접근은 프라이빗 모드에서 throw 가능
 const themeScript = `try{var t=localStorage.getItem("theme")}catch(e){}document.documentElement.dataset.theme=t||"light"`;

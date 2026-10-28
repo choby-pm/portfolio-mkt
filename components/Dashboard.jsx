@@ -97,7 +97,7 @@ export default function Dashboard({ data }) {
 
   // shortcut: Hobby 플랜은 커스텀 이벤트 미지원이라 섹션 조회를 가상 pageview로 기록, Pro 전환 시 track()으로 교체
   // 1초 머문 섹션만 기록 (스크롤로 지나치는 섹션 제외), 첫 화면은 "/" 자동 기록과 중복이라 제외
-  // GA4는 커스텀 이벤트가 되므로 열린 상세(프로젝트 id · 회사명)까지 view_screen 한 이벤트로 기록
+  // GA4는 커스텀 이벤트가 되므로 열린 상세(캠페인 id · 회사명)까지 view_screen 한 이벤트로 기록
   const firstView = useRef(true);
   const item = open[active];
   useEffect(() => {

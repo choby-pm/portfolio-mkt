@@ -23,7 +23,7 @@ export async function POST(request) {
       from: "Portfolio <onboarding@resend.dev>",
       to: data.profile.email,
       reply_to: email,
-      subject: `[포트폴리오 문의] ${company}`,
+      subject: `[마케팅 포트폴리오 문의] ${company}`,
       text: `${message}\n\n---\n회사: ${company}\n회신 메일: ${email}`,
     }),
   });

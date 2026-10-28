@@ -49,7 +49,7 @@ function CampaignGrid({ campaigns, onOpen }) {
   );
 }
 
-// 목록 화면 ↔ 상세 화면. 상세는 상단 줄에서 목록 · 이전/다음 프로젝트로 이동
+// 목록 화면 ↔ 상세 화면. 상세는 상단 줄에서 목록 · 이전/다음 캠페인으로 이동
 export default function Campaigns({ campaigns, openId, onOpen, onBack }) {
   const i = campaigns.findIndex((p) => p.id === openId);
   if (i < 0) return <CampaignGrid campaigns={campaigns} onOpen={onOpen} />;

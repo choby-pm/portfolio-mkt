@@ -34,7 +34,7 @@ export default function Contact({ profile }) {
   return (
     // flex-1: 섹션 남은 높이까지 늘어나고, 그 안에서 내용 칸이 나머지를 채움
     <div className="flex-1 flex flex-col gap-4">
-      <p className="text-muted">프로젝트 협업이나 채용 관련 문의를 남겨 주시면 확인 후 회신드리겠습니다.</p>
+      <p className="text-muted">마케팅 협업이나 채용 관련 문의를 남겨 주시면 확인 후 회신드리겠습니다.</p>
       <form onSubmit={onSubmit} className="flex-1 flex flex-col gap-3">
         <div className="grid sm:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1.5 text-sm">
