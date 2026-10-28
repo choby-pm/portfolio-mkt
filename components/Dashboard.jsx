@@ -1,21 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { User, FolderKanban, Route, Mail } from "lucide-react";
+import { LayoutDashboard, Megaphone, Sparkles, Route, Mail } from "lucide-react";
 import { pageview } from "@vercel/analytics";
 import { track } from "@/lib/gtag";
 import { SideNav, BottomNav } from "./Nav";
 import TopActions from "./TopActions";
 import Overview from "./sections/Overview";
-import Projects from "./sections/Projects";
+import Campaigns from "./sections/Campaigns";
+import GeoLab from "./sections/GeoLab";
 import Career from "./sections/Career";
 import Contact from "./sections/Contact";
 
 const SECTIONS = [
-  { id: "overview", label: "인사기록카드", short: "인사", icon: User },
-  { id: "projects", label: "프로젝트 관리", short: "프로젝트", icon: FolderKanban },
-  { id: "career", label: "경력 이력", short: "경력", icon: Route },
-  { id: "contact", label: "문의 등록", short: "문의", icon: Mail },
+  { id: "overview", label: "개요", short: "개요", icon: LayoutDashboard },
+  { id: "campaigns", label: "캠페인", short: "캠페인", icon: Megaphone },
+  { id: "geo", label: "GEO 랩", short: "GEO", icon: Sparkles },
+  { id: "career", label: "경력", short: "경력", icon: Route },
+  { id: "contact", label: "문의", short: "문의", icon: Mail },
 ];
 
 // 섹션 끝에 닿은 뒤 다음 메뉴로 넘어가려면 이만큼 휠을 멈췄다 다시 굴려야 함(ms)
@@ -55,7 +57,7 @@ export default function Dashboard({ data }) {
         return;
       }
       e.preventDefault();
-      // 상세 화면(프로젝트 · 경력)은 끝까지 스크롤해도 다음 섹션으로 넘어가지 않음. 목록 버튼이나 메뉴로 나감
+      // 상세 화면(캠페인 · 경력)은 끝까지 스크롤해도 다음 섹션으로 넘어가지 않음. 목록 버튼이나 메뉴로 나감
       if (sec.dataset.lock !== undefined) return;
       const now = performance.now();
       // 섹션을 끝까지 스크롤한 그 제스처(관성 포함)로는 넘어가지 않음. 잠깐 멈췄다 다시 굴리면 다음 메뉴로
@@ -77,14 +79,14 @@ export default function Dashboard({ data }) {
     return () => main.removeEventListener("wheel", onWheel);
   }, []);
 
-  // 섹션별로 열린 상세: { projects: 프로젝트 id, career: 회사명 }. 열려 있으면 그 섹션은 목록 대신 상세 화면
+  // 섹션별로 열린 상세: { campaigns: 캠페인 id, career: 회사명 }. 열려 있으면 그 섹션은 목록 대신 상세 화면
   const [open, setOpen] = useState({});
   const openDetail = (sec, id) => {
     setOpen((o) => ({ ...o, [sec]: id }));
     document.getElementById(sec).scrollTop = 0;
   };
   const closeDetail = (sec) => openDetail(sec, null);
-  const caseId = open.projects;
+  const caseId = open.campaigns;
 
   // 내비 클릭 → 해당 섹션으로 스냅 이동, 열린 상세는 닫음
   const goTo = (id) => {
@@ -103,7 +105,7 @@ export default function Dashboard({ data }) {
       track("view_screen", { screen: active, item });
       if (firstView.current && active === SECTIONS[0].id) return;
       firstView.current = false;
-      pageview({ path: active === "projects" && caseId ? `/case/${caseId}` : `/${active}` });
+      pageview({ path: active === "campaigns" && caseId ? `/case/${caseId}` : `/${active}` });
     }, 1000);
     return () => clearTimeout(t);
   }, [active, caseId, item]);
@@ -112,9 +114,11 @@ export default function Dashboard({ data }) {
     switch (id) {
       case "overview":
         // 첫 화면 증거 줄 → Projects로 이동하며 해당 케이스 열기
-        return <Overview data={data} onOpenCase={(id) => { goTo("projects"); openDetail("projects", id); }} />;
-      case "projects":
-        return <Projects projects={data.projects} openId={open.projects} onOpen={(id) => openDetail("projects", id)} onBack={() => closeDetail("projects")} />;
+        return <Overview data={data} onOpenCase={(id) => { goTo("campaigns"); openDetail("campaigns", id); }} />;
+      case "campaigns":
+        return <Campaigns campaigns={data.campaigns} openId={open.campaigns} onOpen={(id) => openDetail("campaigns", id)} onBack={() => closeDetail("campaigns")} />;
+      case "geo":
+        return <GeoLab geo={data.geo} />;
       case "career":
         return <Career data={data} openId={open.career} onOpen={(id) => openDetail("career", id)} onBack={() => closeDetail("career")} />;
       case "contact":
@@ -126,7 +130,7 @@ export default function Dashboard({ data }) {
     <div className="h-dvh flex flex-col md:flex-row">
       <SideNav sections={SECTIONS} active={active} onSelect={goTo} name={data.profile.name} role={data.profile.role} />
       {/* 상세가 열리면 바깥 스크롤을 잠가 휠·트랙패드 관성·키보드·스냅 재정렬 어떤 경로로도 섹션이 바뀌지 않게 (내비 클릭의 scrollIntoView는 동작) */}
-      <main ref={mainRef} className={`flex-1 min-h-0 no-scrollbar snap-y snap-mandatory ${open.projects || open.career ? "overflow-hidden" : "overflow-y-auto"}`}>
+      <main ref={mainRef} className={`flex-1 min-h-0 no-scrollbar snap-y snap-mandatory ${open.campaigns || open.career ? "overflow-hidden" : "overflow-y-auto"}`}>
         {SECTIONS.map(({ id, label }) => (
           <section
             key={id}
@@ -140,6 +144,11 @@ export default function Dashboard({ data }) {
             <div className="min-h-full flex flex-col px-4 py-8 md:px-6 lg:px-8 md:pt-9 md:pb-8 short:pt-5 short:pb-4 xshort:pt-4 xshort:pb-2">
               <div className="mb-5 short:mb-4 xshort:mb-2 flex items-center gap-3">
                 <h2 className="font-heading text-xl md:text-2xl font-bold leading-none">{label}</h2>
+                {/* 분석 콘솔의 속성 · 기간 선택 칩 모양. 표시용이라 누를 수 없음 */}
+                <span className="hidden md:inline-flex items-center gap-1.5 text-xs text-muted">
+                  <span className="clay h-6 px-2 inline-flex items-center">속성: {data.profile.name} · Growth</span>
+                  <span className="clay h-6 px-2 inline-flex items-center tabular-nums">{data.profile.since} – 현재</span>
+                </span>
                 <TopActions profile={data.profile} />
               </div>
               {render(id)}
