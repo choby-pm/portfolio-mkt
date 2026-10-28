@@ -28,6 +28,13 @@ const m = data.campaigns.find((c) => c.id === "measurement");
 const events = m.troubles.find((t) => t.visual?.type === "table").visual.rows.length;
 assert.equal(m.metrics.find((x) => x.label === "GA4 이벤트").value, `${events}종`);
 
+// 첫 화면 요약: 출처 번호는 모두 출처 목록에 있고, 출처는 실제 케이스 또는 섹션을 가리킴
+const targets = new Set([...ids, "career", "geo"]);
+const refs = new Set(data.answer.sources.map((x) => x.n));
+for (const p of data.answer.parts) if (p.ref) assert.ok(refs.has(p.ref), `없는 출처 번호: ${p.ref}`);
+for (const x of data.answer.sources) assert.ok(targets.has(x.href.slice(1)), `없는 출처 대상: ${x.href}`);
+for (const c of data.capabilities) assert.ok(c.q, `질문 없음: ${c.title}`);
+
 // GEO 랩: 아직 성과가 없는 계획 · 연구 노트. 상태를 바꾸지 않은 채 성과처럼 보이지 않게
 assert.equal(data.geo.plan.status.label, "준비 중");
 assert.ok(data.geo.log.length >= 1, "진행 로그 없음");

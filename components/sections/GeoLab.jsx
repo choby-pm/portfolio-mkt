@@ -1,7 +1,8 @@
 import { ArrowRightLeft, NotebookPen, Ruler, Scale, History } from "lucide-react";
-import { Panel, FormTable } from "@/components/Panel";
 import Visual from "./Visual";
-import { Status } from "./CaseStudy";
+
+// 상태 배지(준비 중)
+const Status = ({ status }) => <span className="shrink-0 px-2 h-6 inline-flex items-center rounded-xs text-xs whitespace-nowrap bg-accent-soft text-accent">{status.label}</span>;
 
 // 노트 구분 배지: 출처가 있는 사실 · 모르는 것 · 아직 검증 안 된 가설을 섞지 않게
 const KIND = {
@@ -10,7 +11,7 @@ const KIND = {
   hypothesis: { label: "가설", className: "bg-accent-soft text-accent" },
 };
 
-// 제목 줄 + 내용. Visual이 자체 카드를 그리므로 Panel로 한 번 더 감싸지 않음
+// 제목 줄 + 내용. Visual이 자체 카드를 그리므로 한 번 더 감싸지 않음
 function Block({ title, icon: Icon, aside, children }) {
   return (
     <section aria-label={title} className="flex flex-col gap-2">
@@ -55,20 +56,25 @@ export default function GeoLab({ geo }) {
       </Block>
 
       <Block title={plan.title} icon={Scale}>
-        <Panel title="적용 대상" aside={<Status status={plan.status} />}>
-          <div className="@container p-4 flex flex-col gap-4">
-            <FormTable
-              rows={[
-                ["대상", "노동법률사무소 (익명)"],
-                ["오픈", plan.open],
-                ["주력 분야", plan.field ?? "—"],
-                ["지역", plan.region ?? "—"],
-              ]}
-            />
-            <Visual visual={plan.queries} />
-            <Visual visual={plan.strategy} />
-          </div>
-        </Panel>
+        <div className="flex flex-col gap-4">
+          {/* 아직 정해지지 않은 값은 "—" */}
+          <dl className="flex flex-wrap gap-x-8 gap-y-2 text-sm">
+            {[
+              ["상태", <Status key="s" status={plan.status} />],
+              ["대상", "노동법률사무소 (익명)"],
+              ["오픈", plan.open],
+              ["주력 분야", plan.field ?? "—"],
+              ["지역", plan.region ?? "—"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex items-center gap-2">
+                <dt className="text-muted">{k}</dt>
+                <dd className="font-medium">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <Visual visual={plan.queries} />
+          <Visual visual={plan.strategy} />
+        </div>
       </Block>
 
       <Block title="진행 로그" icon={History} aside="실패한 가설도 기록">
