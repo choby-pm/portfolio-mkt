@@ -1,12 +1,10 @@
 {
   "profile": {
     "name": "조병윤",
-    "role": "서비스 기획자 · PM",
-    "tagline": "마케팅 · 개발 · 기획을 거치며 쌓은 경험으로\n오픈한 서비스의 문제를 찾아 기획 · QA까지 직접 개선하는 서비스 기획자입니다.",
-    "photo": "/profile_pic.png",
+    "role": "그로스 마케터",
+    "tagline": "검색 유입을 진단하고, 측정을 설계하고, 직접 구현까지 하는 그로스 마케터.\n다음 목표는 AI 검색(GEO)입니다.",
     "company": "뉴엔AI · 솔루션 기획팀",
     "location": "서울특별시 동작구",
-    "domain": "AI · 공공 · ERP · SaaS",
     "phone": "010-3399-9128",
     "email": "choby.pm@gmail.com",
     "resumeUrl": "",
@@ -19,45 +17,111 @@
     ],
     "since": "2020.11"
   },
-  "strengths": [
+  "kpis": [
     {
-      "title": "서비스 운영 · 개선 기획",
-      "desc": "문의 · 오류를 유형별로 나눠 원인을 추론하고, 수정 요청을 기능 정의서로 정리해 QA까지 직접 검증하며 서비스를 개선합니다.",
+      "label": "마케팅 · SEO 실무",
+      "value": "2년",
+      "note": "인턴 4개월 · 기획 겸임 9개월 포함"
+    },
+    {
+      "label": "SEO 운영 국가",
+      "value": "26개국",
+      "note": "삼성전자 가전 글로벌 사이트"
+    },
+    {
+      "label": "주요 키워드 SERP 1페이지",
+      "value": "대부분",
+      "note": "노출되지 않던 홈페이지 기준"
+    },
+    {
+      "label": "운영 광고 예산",
+      "value": null
+    }
+  ],
+  "capabilities": [
+    {
+      "title": "검색광고 · 퍼포먼스",
+      "desc": "핵심 키워드 기준으로 광고 소재를 기획하고, 캠페인 성과를 주기적으로 분석해 효율을 개선합니다.",
       "proof": {
-        "case": "nuclear-dashboard",
-        "label": "원전 대시보드 기획 · 운영"
+        "label": "홈페이지 광고 · SEO",
+        "case": "groundk-seo"
       }
     },
     {
-      "title": "개발 이해도를 갖춘 서비스 기획",
-      "desc": "프론트엔드 개발 경험으로 API와 시스템 구조를 이해해 개발자와 같은 언어로 소통하고, AI 도구로 QA 자동화 · 문서화를 직접 수행합니다.",
+      "title": "SEO",
+      "desc": "사이트 구조 · 메타 태그 · 콘텐츠 · 내부 링크를 진단해 우선순위를 정하고, 26개국 다국어 SEO를 운영했습니다.",
       "proof": {
-        "case": "vc-erp",
-        "label": "VC ERP 시나리오 86건 자동 QA"
+        "label": "삼성전자 26개국 SEO",
+        "case": "samsung-seo"
       }
     },
     {
-      "title": "고객 문제 중심의 요구사항 정의",
-      "desc": "고객 인터뷰로 실제 업무 흐름과 의사결정 구조를 파악하고, 이를 요구사항과 서비스 설계로 구체화합니다.",
+      "title": "측정 · 분석 설계",
+      "desc": "알고 싶은 질문에서 출발해 GA4 이벤트 · 파라미터와 UTM 규칙을 설계하고, 본인 방문 같은 노이즈를 걸러 냅니다.",
       "proof": {
-        "case": "council-ai",
-        "label": "지방의회 AI 병목 6개 → MVP 정의"
+        "label": "포트폴리오 측정 설계",
+        "case": "measurement"
       }
     },
     {
-      "title": "B2B SaaS 구조 · 권한 설계",
-      "desc": "멀티테넌시, 역할 기반 권한, 업무 상태 흐름 등 B2B SaaS의 핵심 구조를 설계합니다.",
+      "title": "웹 구현",
+      "desc": "프론트엔드 개발 경험(Vue.js · React · Next.js)으로 추적 코드와 페이지를 직접 구현합니다.",
       "proof": {
-        "case": "mice-vip",
-        "label": "MICE 필드 단위 권한 설계"
+        "label": "이 사이트 (Next.js)",
+        "case": "measurement"
+      }
+    },
+    {
+      "title": "GEO (준비 중)",
+      "desc": "SEO 경험을 바탕으로 AI 검색 노출을 연구하며, 가설 · 측정 프레임 · 적용 계획을 기록합니다.",
+      "proof": {
+        "label": "GEO 랩",
+        "screen": "geo"
       }
     }
   ],
   "skills": [
     {
+      "group": "Analytics · SEO",
+      "items": [
+        {
+          "name": "GA4",
+          "icon": "googleanalytics"
+        },
+        {
+          "name": "Search Console",
+          "icon": "googlesearchconsole"
+        }
+      ]
+    },
+    {
+      "group": "Web · Dev",
+      "items": [
+        {
+          "name": "Next.js",
+          "icon": "nextdotjs"
+        },
+        {
+          "name": "React",
+          "icon": "react"
+        },
+        {
+          "name": "Vue.js",
+          "icon": "vuedotjs"
+        },
+        {
+          "name": "Vercel",
+          "icon": "vercel"
+        },
+        {
+          "name": "GitHub",
+          "icon": "github"
+        }
+      ]
+    },
+    {
       "group": "AI",
       "ai": true,
-      "hero": true,
       "items": [
         {
           "name": "Claude Code",
@@ -74,22 +138,16 @@
       ]
     },
     {
-      "group": "Planning · Docs",
-      "hero": true,
+      "group": "Collaboration · Docs",
       "items": [
         {
-          "name": "Figma",
-          "icon": "figma"
+          "name": "Notion",
+          "icon": "notion"
         },
         {
-          "name": "MS Office",
-          "icon": "office"
-        }
-      ]
-    },
-    {
-      "group": "Collaboration",
-      "items": [
+          "name": "Slack",
+          "icon": "slack"
+        },
         {
           "name": "Jira",
           "icon": "jira"
@@ -99,120 +157,14 @@
           "icon": "workflow"
         },
         {
-          "name": "Slack",
-          "icon": "slack"
+          "name": "Figma",
+          "icon": "figma"
         },
         {
-          "name": "Notion",
-          "icon": "notion"
+          "name": "MS Office",
+          "icon": "office"
         }
       ]
-    },
-    {
-      "group": "Data · Dev",
-      "items": [
-        {
-          "name": "GA4",
-          "icon": "googleanalytics"
-        },
-        {
-          "name": "GitHub",
-          "icon": "github"
-        },
-        {
-          "name": "React",
-          "icon": "react"
-        },
-        {
-          "name": "Vue.js",
-          "icon": "vuedotjs"
-        },
-        {
-          "name": "Next.js",
-          "icon": "nextdotjs"
-        },
-        {
-          "name": "Vercel",
-          "icon": "vercel"
-        }
-      ]
-    }
-  ],
-  "education": [
-    {
-      "period": "2024.01 - 2024.03",
-      "name": "제로베이스 PM School",
-      "detail": "서비스 기획자 부트캠프"
-    },
-    {
-      "period": "2022.03 - 2022.06",
-      "name": "스파르타 코딩클럽 항해99",
-      "detail": "웹 개발자 부트캠프 (FE)"
-    },
-    {
-      "period": "2020.08 - 2020.11",
-      "name": "도와세움 디지털 마케팅 코스",
-      "detail": "디지털 마케터 부트캠프"
-    },
-    {
-      "period": "2018.03 - 2021.02",
-      "type": "degree",
-      "name": "강원대학교",
-      "detail": "컴퓨터과학전공 졸업"
-    },
-    {
-      "period": "2012.03 - 2016.02",
-      "type": "degree",
-      "name": "충청대학교",
-      "detail": "경영회계학부 졸업"
-    }
-  ],
-  "awards": [
-    {
-      "period": "2019",
-      "name": "강원대학교 프레젠테이션 공모전",
-      "detail": "제1회 울림제 · 최우수상 · 총장상",
-      "deck": {
-        "title": "울림제 발표 자료 · 강원대학교를 배리어프리로!",
-        "path": "/awards/ulim/",
-        "slides": 22
-      }
-    },
-    {
-      "period": "2019",
-      "name": "한국 필립모리스 UNSMOKE 광고 공모전",
-      "detail": "포스터 부문 입선",
-      "deck": {
-        "title": "한국 필립모리스 UNSMOKE 광고 공모전 · 포스터 부문 입선작",
-        "images": [
-          "/awards/unsmoke/poster.webp"
-        ],
-        "size": [
-          590,
-          838
-        ],
-        "note": {
-          "headline": "비주얼 스토리텔링을 활용한 효과적인 광고 기획",
-          "body": "“아빠, 왜 산타는 안 와?”\n\n굴뚝을 가득 채운 담배 연기 때문에 산타가 들어오지 못한다는 아이의 시선으로, 실내 흡연에 대한 경각심을 불러일으키는 인쇄 광고를 기획했습니다.\n\n한국 필립모리스 UNSMOKE 광고 공모전 포스터 부문 입선"
-        }
-      }
-    },
-    {
-      "period": "2016",
-      "name": "충청대학교 학업 우수상",
-      "detail": "학과 학업 우수 졸업 · 총장상"
-    }
-  ],
-  "activities": [
-    {
-      "period": "2023.05 - 2024.05",
-      "name": "캐나다 워킹홀리데이",
-      "detail": "약 1년"
-    },
-    {
-      "period": "2016.03 - 2017.07",
-      "name": "호주 워킹홀리데이",
-      "detail": "약 1년 4개월"
     }
   ],
   "campaigns": [
@@ -484,6 +436,83 @@
         "지원 회사별 UTM 링크 규칙 운영"
       ],
       "gallery": []
+    }
+  ],
+  "education": [
+    {
+      "period": "2024.01 - 2024.03",
+      "name": "제로베이스 PM School",
+      "detail": "서비스 기획자 부트캠프"
+    },
+    {
+      "period": "2022.03 - 2022.06",
+      "name": "스파르타 코딩클럽 항해99",
+      "detail": "웹 개발자 부트캠프 (FE)"
+    },
+    {
+      "period": "2020.08 - 2020.11",
+      "name": "도와세움 디지털 마케팅 코스",
+      "detail": "디지털 마케터 부트캠프"
+    },
+    {
+      "period": "2018.03 - 2021.02",
+      "type": "degree",
+      "name": "강원대학교",
+      "detail": "컴퓨터과학전공 졸업"
+    },
+    {
+      "period": "2012.03 - 2016.02",
+      "type": "degree",
+      "name": "충청대학교",
+      "detail": "경영회계학부 졸업"
+    }
+  ],
+  "awards": [
+    {
+      "period": "2019",
+      "name": "강원대학교 프레젠테이션 공모전",
+      "detail": "제1회 울림제 · 최우수상 · 총장상",
+      "deck": {
+        "title": "울림제 발표 자료 · 강원대학교를 배리어프리로!",
+        "path": "/awards/ulim/",
+        "slides": 22
+      }
+    },
+    {
+      "period": "2019",
+      "name": "한국 필립모리스 UNSMOKE 광고 공모전",
+      "detail": "포스터 부문 입선",
+      "deck": {
+        "title": "한국 필립모리스 UNSMOKE 광고 공모전 · 포스터 부문 입선작",
+        "images": [
+          "/awards/unsmoke/poster.webp"
+        ],
+        "size": [
+          590,
+          838
+        ],
+        "note": {
+          "headline": "비주얼 스토리텔링을 활용한 효과적인 광고 기획",
+          "body": "“아빠, 왜 산타는 안 와?”\n\n굴뚝을 가득 채운 담배 연기 때문에 산타가 들어오지 못한다는 아이의 시선으로, 실내 흡연에 대한 경각심을 불러일으키는 인쇄 광고를 기획했습니다.\n\n한국 필립모리스 UNSMOKE 광고 공모전 포스터 부문 입선"
+        }
+      }
+    },
+    {
+      "period": "2016",
+      "name": "충청대학교 학업 우수상",
+      "detail": "학과 학업 우수 졸업 · 총장상"
+    }
+  ],
+  "activities": [
+    {
+      "period": "2023.05 - 2024.05",
+      "name": "캐나다 워킹홀리데이",
+      "detail": "약 1년"
+    },
+    {
+      "period": "2016.03 - 2017.07",
+      "name": "호주 워킹홀리데이",
+      "detail": "약 1년 4개월"
     }
   ],
   "military": [],

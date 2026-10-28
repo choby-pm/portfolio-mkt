@@ -114,7 +114,7 @@ export default function Dashboard({ data }) {
     switch (id) {
       case "overview":
         // 첫 화면 증거 줄 → Projects로 이동하며 해당 케이스 열기
-        return <Overview data={data} onOpenCase={(id) => { goTo("campaigns"); openDetail("campaigns", id); }} />;
+        return <Overview data={data} onOpenCase={(id) => { goTo("campaigns"); openDetail("campaigns", id); }} onGo={goTo} />;
       case "campaigns":
         return <Campaigns campaigns={data.campaigns} openId={open.campaigns} onOpen={(id) => openDetail("campaigns", id)} onBack={() => closeDetail("campaigns")} />;
       case "geo":

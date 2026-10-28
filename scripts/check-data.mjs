@@ -13,4 +13,13 @@ for (const c of data.campaigns) {
   for (const m of c.metrics) assert.ok(metricOk(m), `${c.id} 지표 값: ${JSON.stringify(m)}`);
 }
 
+// 개요: KPI 값 규칙은 지표와 같고, 역량 근거는 실제 캠페인 id 또는 화면 id만
+const ids = new Set(data.campaigns.map((c) => c.id));
+assert.ok(data.kpis.length > 0, "kpis 없음");
+for (const k of data.kpis) assert.ok(metricOk(k), `KPI 값: ${JSON.stringify(k)}`);
+for (const c of data.capabilities) {
+  if (c.proof?.case) assert.ok(ids.has(c.proof.case), `없는 케이스 근거: ${c.proof.case}`);
+  if (c.proof?.screen) assert.ok(["geo"].includes(c.proof.screen), `없는 화면 근거: ${c.proof.screen}`);
+}
+
 console.log("check-data: ok");
