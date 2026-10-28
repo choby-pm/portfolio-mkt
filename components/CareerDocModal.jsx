@@ -91,14 +91,17 @@ export function CareerDocBody({ doc, overview = true }) {
           {d.scope && <p className="mt-2 inline-block px-2 py-0.5 rounded-sm border border-border text-xs text-muted">{d.scope}</p>}
           <p className="mt-2 text-sm leading-relaxed">{d.summary}</p>
 
-          <dl className="mt-3 grid sm:grid-cols-[9rem_1fr] gap-x-4 gap-y-2 text-sm">
-            {d.items.map(([label, text]) => (
-              <div key={label} className="contents">
-                <dt className="font-medium text-muted">{label}</dt>
-                <dd className="leading-relaxed mb-1 sm:mb-0">{text}</dd>
-              </div>
-            ))}
-          </dl>
+          {/* 요약만 남긴 업무(마케팅과 먼 업무)는 세부 항목 없음 */}
+          {d.items.length > 0 && (
+            <dl className="mt-3 grid sm:grid-cols-[9rem_1fr] gap-x-4 gap-y-2 text-sm">
+              {d.items.map(([label, text]) => (
+                <div key={label} className="contents">
+                  <dt className="font-medium text-muted">{label}</dt>
+                  <dd className="leading-relaxed mb-1 sm:mb-0">{text}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
 
           {d.results && (
             <div className="mt-4 clay p-3.5">

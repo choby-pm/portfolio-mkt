@@ -1,13 +1,14 @@
 import { spans, fieldColor, formatMonths, useNowMonth } from "@/lib/career";
 import { CareerDocBody } from "@/components/CareerDocModal";
-import { ChartGantt } from "lucide-react";
-import { Panel, RecordBar } from "@/components/Panel";
+import { ChartGantt, GraduationCap, Award, Plane } from "lucide-react";
+import { Panel, DataTable, RecordBar } from "@/components/Panel";
+import { DeckLink } from "@/components/DeckModal";
 import careerDocs from "@/data/career-docs.json";
 
 // 직무 외(학업 · 교육 · 워홀 · 군복무)는 직군 색과 겹치지 않게 중립 회색 하나로
 const NEUTRAL = "var(--muted)";
 
-// 간트는 시각 요약이고 같은 정보가 아래 그리드와 인사기록카드에 텍스트로 있으므로 스크린리더에선 숨김
+// 간트는 시각 요약이고 같은 정보가 아래 그리드와 표에 텍스트로 있으므로 스크린리더에선 숨김
 function CareerGantt({ data, now }) {
   if (now === null) return <div className="min-h-[180px]" aria-hidden />;
 
@@ -147,7 +148,39 @@ function CareerDetail({ c }) {
   );
 }
 
-// 목록 화면(타임라인 + 그리드) ↔ 상세 화면. 상세는 상단 줄에서 목록 · 이전/다음 회사로 이동
+// 좁은 화면은 기간을 두 줄로 줄여 나머지 칸 폭 확보
+const period = { label: "기간", className: "w-20 sm:w-32 text-xs text-muted tabular-nums sm:whitespace-nowrap" };
+
+// 학력 · 수상 · 해외 활동: 목록 화면 아래에 표로
+function Background({ data }) {
+  return (
+    <div className="grid xl:grid-cols-2 gap-4 items-start">
+      <Panel title="학력 · 교육" icon={GraduationCap}>
+        <DataTable
+          cols={[period, { label: "기관", className: "font-medium" }, { label: "과정", className: "text-muted" }]}
+          rows={data.education.map((e) => ({ key: e.name, cells: [e.period, e.name, e.detail] }))}
+        />
+      </Panel>
+      <Panel title="수상" icon={Award}>
+        <DataTable
+          cols={[{ label: "연도", className: "w-16 text-xs text-muted tabular-nums" }, { label: "수상" }, { label: "내용", className: "text-muted" }]}
+          rows={data.awards.map((a) => ({
+            key: a.name,
+            cells: [a.period, a.deck ? <DeckLink key="d" deck={a.deck}>{a.name}</DeckLink> : <span key="d" className="font-medium">{a.name}</span>, a.detail],
+          }))}
+        />
+      </Panel>
+      <Panel title="해외 활동" icon={Plane}>
+        <DataTable
+          cols={[period, { label: "활동", className: "font-medium" }, { label: "체류", className: "text-muted whitespace-nowrap" }]}
+          rows={data.activities.map((a) => ({ key: a.name, cells: [a.period, a.name, a.detail] }))}
+        />
+      </Panel>
+    </div>
+  );
+}
+
+// 목록 화면(타임라인 + 그리드 + 학력 · 수상 · 해외 활동) ↔ 상세 화면. 상세는 상단 줄에서 목록 · 이전/다음 회사로 이동
 export default function Career({ data, openId, onOpen, onBack }) {
   const now = useNowMonth();
   const items = now === null ? data.career : spans(data.career, now);
@@ -160,6 +193,7 @@ export default function Career({ data, openId, onOpen, onBack }) {
           <CareerGantt data={data} now={now} />
         </Panel>
         <CareerGrid items={items} onOpen={onOpen} />
+        <Background data={data} />
       </div>
     );
   }
