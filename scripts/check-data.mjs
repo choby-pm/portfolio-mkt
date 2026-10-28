@@ -22,4 +22,10 @@ for (const c of data.capabilities) {
   if (c.proof?.screen) assert.ok(["geo"].includes(c.proof.screen), `없는 화면 근거: ${c.proof.screen}`);
 }
 
+// GEO 랩: 아직 성과가 없는 계획 · 연구 노트. 상태를 바꾸지 않은 채 성과처럼 보이지 않게
+assert.equal(data.geo.plan.status.label, "준비 중");
+assert.ok(data.geo.log.length >= 1, "진행 로그 없음");
+for (const n of data.geo.notes) assert.ok(["known", "unknown", "hypothesis"].includes(n.kind), `notes kind: ${n.kind}`);
+assert.ok(data.geo.measure.head.includes("한계"), "측정 프레임에 한계 열 없음");
+
 console.log("check-data: ok");
